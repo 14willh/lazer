@@ -3,7 +3,7 @@
 Lazer is a utility for printing to the console using a fluent API. Written in TypeScript and compatible with Deno and Node.js runtimes.
 
 ## Description
-Lazer that helps you build, format and print complex messages to the console using an expressive fluent API.
+Lazer helps you build, format and print complex messages to the console using an expressive fluent API.
 
 ## Usage
 
