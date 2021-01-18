@@ -18,29 +18,39 @@ if(!_echo)
 
 class Printer {
 
-  // Used to track state of calls to if()
+  // Used to track state of calls to if/elseif/else()
   private print_next = true;
+  private block_entered = false;
 
   public if = (cond: boolean): Printer => 
   {
+    this.block_entered = cond;
     this.print_next = cond;
     return this;
   }
 
-  // public elseif = (cond: boolean): Printer => 
-  // {
+  public elseif = (cond: boolean): Printer => 
+  {
+    // previous if/elseif block was entered, skip this block
+    if(this.block_entered)
+    {
+      this.print_next = false;
+      return this;
+    }
+    
+    return this.if(cond);
+  }
 
-  // }
-
-  // public else = (cond: boolean): Printer => 
-  // {
-
-  // }
+  public else = (): Printer => 
+  {
+    return this.elseif(true);
+  }
 
   // Reset state
   public end = () => 
   {
     this.print_next = true;
+    this.block_entered = false;
     return this;
   }
 
