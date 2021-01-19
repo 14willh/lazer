@@ -106,6 +106,14 @@ class Printer {
     this.print_color(Color.blue, ...args);
   public print_blue_ln = (...args: any[]): Printer =>
     this.print_color_ln(Color.blue, ...args);
+  public print_magenta = (...args: any[]): Printer =>
+    this.print_color(Color.blue, ...args);
+  public print_magenta_ln = (...args: any[]): Printer =>
+    this.print_color_ln(Color.blue, ...args);
+  public print_cyan = (...args: any[]): Printer =>
+    this.print_color(Color.blue, ...args);
+  public print_cyan_ln = (...args: any[]): Printer =>
+    this.print_color_ln(Color.blue, ...args);
 
   public print_space = (len = 1): Printer =>
     this.print(new Array(len + 1).join(" "));
@@ -146,6 +154,11 @@ class Printer {
   };
   public reset = (): Printer => this.set_color(Color.reset);
   public set_color_red = (): Printer => this.set_color(Color.red);
+  public set_color_green = (): Printer => this.set_color(Color.green);
+  public set_color_yellow = (): Printer => this.set_color(Color.yellow);
+  public set_color_blue = (): Printer => this.set_color(Color.blue);
+  public set_color_magenta = (): Printer => this.set_color(Color.magenta);
+  public set_color_cyan = (): Printer => this.set_color(Color.cyan);
 }
 
 // Enforce calling reset before starting new print chain
