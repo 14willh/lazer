@@ -11,6 +11,7 @@ const decorate_echo = (printer: any, context: { stdout: string }): void =>
     }
 }
 
+// Printer #if
 Deno.test('Printer #if should print following statements when condition is true', () => 
 {
     const printer = lazer();
@@ -39,6 +40,43 @@ Deno.test('Printer #if should not print following statements when condition is f
     assertEquals(context.stdout.includes("this is false"), false);
 });
 
+Deno.test('Printer #if should print all statements in the block', () => 
+{
+    const printer = lazer();
+    const context = { stdout: '' };
+    decorate_echo(printer, context);
+
+    printer
+        .if(true)
+        .print_ln("this is true 1")
+        .print_ln("this is true 2")
+        .print_ln("this is true 3")
+        .end();
+
+    assertEquals(context.stdout.includes("this is true 1"), true);
+    assertEquals(context.stdout.includes("this is true 2"), true);
+    assertEquals(context.stdout.includes("this is true 3"), true);
+});
+
+Deno.test('Printer #if should print no statements in the block', () => 
+{
+    const printer = lazer();
+    const context = { stdout: '' };
+    decorate_echo(printer, context);
+
+    printer
+        .if(false)
+        .print_ln("this is true 1")
+        .print_ln("this is true 2")
+        .print_ln("this is true 3")
+        .end();
+
+    assertEquals(context.stdout.includes("this is true 1"), false);
+    assertEquals(context.stdout.includes("this is true 2"), false);
+    assertEquals(context.stdout.includes("this is true 3"), false);
+});
+
+// Printer #elseif
 Deno.test('Printer #elseif should print following statements when condition is true', () => 
 {
     const printer = lazer();
@@ -90,6 +128,45 @@ Deno.test('Printer #elseif not should print following statements when condition 
     assertEquals(context.stdout.includes("this is false"), false);
 });
 
+Deno.test('Printer #elseif should print all statements in the block', () => 
+{
+    const printer = lazer();
+    const context = { stdout: '' };
+    decorate_echo(printer, context);
+
+    printer
+        .if(false)
+        .elseif(true)
+        .print_ln("this is true 1")
+        .print_ln("this is true 2")
+        .print_ln("this is true 3")
+        .end();
+
+    assertEquals(context.stdout.includes("this is true 1"), true);
+    assertEquals(context.stdout.includes("this is true 2"), true);
+    assertEquals(context.stdout.includes("this is true 3"), true);
+});
+
+Deno.test('Printer #elseif should print no statements in the block', () => 
+{
+    const printer = lazer();
+    const context = { stdout: '' };
+    decorate_echo(printer, context);
+
+    printer
+        .if(false)
+        .elseif(false)
+        .print_ln("this is true 1")
+        .print_ln("this is true 2")
+        .print_ln("this is true 3")
+        .end();
+
+    assertEquals(context.stdout.includes("this is true 1"), false);
+    assertEquals(context.stdout.includes("this is true 2"), false);
+    assertEquals(context.stdout.includes("this is true 3"), false);
+});
+
+// Printer #else
 Deno.test('Printer #else should not print if previous if block entered', () => 
 {
     const printer = lazer();
@@ -165,4 +242,42 @@ Deno.test('Printer #else should print if previous if/elseif block not entered', 
     assertEquals(context.stdout.includes("this is false if"), false);
     assertEquals(context.stdout.includes("this is false elseif"), false);
     assertEquals(context.stdout.includes("this is true"), true);
+});
+
+Deno.test('Printer #else should print all statements in the block', () => 
+{
+    const printer = lazer();
+    const context = { stdout: '' };
+    decorate_echo(printer, context);
+
+    printer
+        .if(false)
+        .else()
+        .print_ln("this is true 1")
+        .print_ln("this is true 2")
+        .print_ln("this is true 3")
+        .end();
+
+    assertEquals(context.stdout.includes("this is true 1"), true);
+    assertEquals(context.stdout.includes("this is true 2"), true);
+    assertEquals(context.stdout.includes("this is true 3"), true);
+});
+
+Deno.test('Printer #else should print no statements in the block', () => 
+{
+    const printer = lazer();
+    const context = { stdout: '' };
+    decorate_echo(printer, context);
+
+    printer
+        .if(true)
+        .else()
+        .print_ln("this is true 1")
+        .print_ln("this is true 2")
+        .print_ln("this is true 3")
+        .end();
+
+    assertEquals(context.stdout.includes("this is true 1"), false);
+    assertEquals(context.stdout.includes("this is true 2"), false);
+    assertEquals(context.stdout.includes("this is true 3"), false);
 });
