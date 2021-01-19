@@ -10,7 +10,7 @@ enum Color {
 }
 
 class Printer {
-  /// @ts-ignore
+  /// @ts-ignore Ignore errors so can re-use for Deno + Node.js
   private echo = Deno ? (input?: string) => Deno.stdout.writeSync(new TextEncoder().encode(input)) : process ? process.stdout.write : undefined;
 
   constructor()
@@ -22,22 +22,22 @@ class Printer {
   }
 
   // Used to track state of calls to if/elseif/else()
-  private print_next = true;
-  private block_entered = false;
+  private printNext = true;
+  private blockEntered = false;
 
   public if = (cond: boolean): Printer => 
   {
-    this.block_entered = cond;
-    this.print_next = cond;
+    this.blockEntered = cond;
+    this.printNext = cond;
     return this;
   }
 
   public elseif = (cond: boolean): Printer => 
   {
     // previous if/elseif block was entered, skip this block
-    if(this.block_entered)
+    if(this.blockEntered)
     {
-      this.print_next = false;
+      this.printNext = false;
       return this;
     }
     
@@ -52,28 +52,28 @@ class Printer {
   // Reset state
   public end = () => 
   {
-    this.print_next = true;
-    this.block_entered = false;
+    this.printNext = true;
+    this.blockEntered = false;
     return this;
   }
 
-  public print = (...args: any[]): Printer => {
-    if(!this.print_next) 
+  public print = (...args: unknown[]): Printer => {
+    if(!this.printNext) 
       return this;
 
-    const arg_string = args.reduce((a, c, i) => {
+    const argString = args.reduce((a, c, i) => {
       const isObject = typeof c === "object";
-      const c_string = isObject ? JSON.stringify(c, null, 4) : c;
+      const cString = isObject ? JSON.stringify(c, null, 4) : c;
 
-      return i > 0 ? `${a} ${c_string}` : `${a}${c_string}`;
+      return i > 0 ? `${a} ${cString}` : `${a}${cString}`;
     }, "");
 
-    this.echo(arg_string);
+    this.echo(argString);
 
     return this;
   };
-  public print_color = (color: Color, ...args: any[]): Printer => {
-    if(!this.print_next) 
+  public print_color = (color: Color, ...args: unknown[]): Printer => {
+    if(!this.printNext) 
       return this;
     
     this.echo(color);
@@ -82,37 +82,37 @@ class Printer {
 
     return this;
   };
-  public print_ln = (...args: any[]): Printer => this.print(...args, "\n");
-  public print_color_ln = (color: Color, ...args: any[]): Printer => {
-    if(!this.print_next) 
+  public print_ln = (...args: unknown[]): Printer => this.print(...args, "\n");
+  public print_color_ln = (color: Color, ...args: unknown[]): Printer => {
+    if(!this.printNext) 
       return this;
 
     this.print_color(color, ...args);
     return this.print_ln();
   };
-  public print_red = (...args: any[]): Printer =>
+  public print_red = (...args: unknown[]): Printer =>
     this.print_color(Color.red, ...args);
-  public print_red_ln = (...args: any[]): Printer =>
+  public print_red_ln = (...args: unknown[]): Printer =>
     this.print_color_ln(Color.red, ...args);
-  public print_green = (...args: any[]): Printer =>
+  public print_green = (...args: unknown[]): Printer =>
     this.print_color(Color.green, ...args);
-  public print_green_ln = (...args: any[]): Printer =>
+  public print_green_ln = (...args: unknown[]): Printer =>
     this.print_color_ln(Color.green, ...args);
-  public print_yellow = (...args: any[]): Printer =>
+  public print_yellow = (...args: unknown[]): Printer =>
     this.print_color(Color.yellow, ...args);
-  public print_yellow_ln = (...args: any[]): Printer =>
+  public print_yellow_ln = (...args: unknown[]): Printer =>
     this.print_color_ln(Color.yellow, ...args);
-  public print_blue = (...args: any[]): Printer =>
+  public print_blue = (...args: unknown[]): Printer =>
     this.print_color(Color.blue, ...args);
-  public print_blue_ln = (...args: any[]): Printer =>
+  public print_blue_ln = (...args: unknown[]): Printer =>
     this.print_color_ln(Color.blue, ...args);
-  public print_magenta = (...args: any[]): Printer =>
+  public print_magenta = (...args: unknown[]): Printer =>
     this.print_color(Color.magenta, ...args);
-  public print_magenta_ln = (...args: any[]): Printer =>
+  public print_magenta_ln = (...args: unknown[]): Printer =>
     this.print_color_ln(Color.magenta, ...args);
-  public print_cyan = (...args: any[]): Printer =>
+  public print_cyan = (...args: unknown[]): Printer =>
     this.print_color(Color.cyan, ...args);
-  public print_cyan_ln = (...args: any[]): Printer =>
+  public print_cyan_ln = (...args: unknown[]): Printer =>
     this.print_color_ln(Color.cyan, ...args);
 
   public print_space = (len = 1): Printer =>
@@ -123,12 +123,12 @@ class Printer {
     len: number,
     delim = " ",
   ): Printer => {
-    const pad_len = len - String(str).length;
-    if (pad_len > 0) {
-      return this.print(str + new Array(pad_len + 1).join(delim));
-    } else if (pad_len < 0) {
+    const padLen = len - String(str).length;
+    if (padLen > 0) {
+      return this.print(str + new Array(padLen + 1).join(delim));
+    } else if (padLen < 0) {
       return this.print(
-        String(str).slice(0, len - String(pad_len).length) + `+${-pad_len}`,
+        String(str).slice(0, len - String(padLen).length) + `+${-padLen}`,
       );
     }
     return this.print(str);
@@ -138,15 +138,15 @@ class Printer {
     len: number,
     delim = " ",
   ): Printer => {
-    const pad_len = len - String(str).length;
-    if (pad_len > 0) {
-      return this.print(new Array(pad_len + 1).join(delim) + str);
+    const padLen = len - String(str).length;
+    if (padLen > 0) {
+      return this.print(new Array(padLen + 1).join(delim) + str);
     }
     return this.print(str);
   };
 
   public set_color = (color: Color): Printer => {
-    if(!this.print_next) 
+    if(!this.printNext) 
       return this;
 
     this.echo(color);
@@ -162,4 +162,4 @@ class Printer {
 }
 
 // Enforce calling reset before starting new print chain
-export const lazer = (...args: any) => new Printer().reset().print(...args);
+export const lazer = (...args: unknown[]) => new Printer().reset().print(...args);
