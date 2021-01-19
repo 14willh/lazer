@@ -9,14 +9,17 @@ enum Color {
   cyan = "\u001b[36m",
 }
 
-/// @ts-ignore
-const _echo = Deno ? (input?: string) => Deno.stdout.writeSync(new TextEncoder().encode(input)) : process ? process.stdout.write : undefined;
-if(!_echo)
-{
-  throw new Error('Deno or Node.js needs to be installed to use Printer.');
-}
-
 class Printer {
+  /// @ts-ignore
+  private echo = Deno ? (input?: string) => Deno.stdout.writeSync(new TextEncoder().encode(input)) : process ? process.stdout.write : undefined;
+
+  constructor()
+  {
+    if(!this.echo)
+    {
+      throw new Error('Deno or Node.js needs to be installed to use Printer.');
+    }
+  }
 
   // Used to track state of calls to if/elseif/else()
   private print_next = true;
@@ -65,7 +68,7 @@ class Printer {
       return i > 0 ? `${a} ${c_string}` : `${a}${c_string}`;
     }, "");
 
-    _echo(arg_string);
+    this.echo(arg_string);
 
     return this;
   };
@@ -73,9 +76,9 @@ class Printer {
     if(!this.print_next) 
       return this;
     
-    _echo(color);
+    this.echo(color);
     this.print(...args);
-    _echo(Color.reset);
+    this.echo(Color.reset);
 
     return this;
   };
@@ -138,7 +141,7 @@ class Printer {
     if(!this.print_next) 
       return this;
 
-    _echo(color);
+    this.echo(color);
     return this;
   };
   public reset = (): Printer => this.set_color(Color.reset);
