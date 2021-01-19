@@ -10,14 +10,11 @@ enum Color {
 }
 
 class Printer {
-  /// @ts-ignore Ignore errors so can re-use for Deno + Node.js
-  private echo = Deno ? (input?: string) => Deno.stdout.writeSync(new TextEncoder().encode(input)) : process ? process.stdout.write : undefined;
+  private echo = (input?: string) => Deno.stdout.writeSync(new TextEncoder().encode(input));
 
-  constructor()
-  {
-    if(!this.echo)
-    {
-      throw new Error('Deno or Node.js needs to be installed to use Printer.');
+  constructor() {
+    if (!this.echo) {
+      throw new Error("Deno or Node.js needs to be installed to use Printer.");
     }
   }
 
@@ -25,45 +22,41 @@ class Printer {
   private printNext = true;
   private blockEntered = false;
 
-  public if = (cond: boolean): Printer => 
-  {
+  public if = (cond: boolean): Printer => {
     this.blockEntered = cond;
     this.printNext = cond;
     return this;
-  }
+  };
 
-  public elseif = (cond: boolean): Printer => 
-  {
+  public elseif = (cond: boolean): Printer => {
     // previous if/elseif block was entered, skip this block
-    if(this.blockEntered)
-    {
+    if (this.blockEntered) {
       this.printNext = false;
       return this;
     }
-    
-    return this.if(cond);
-  }
 
-  public else = (): Printer => 
-  {
+    return this.if(cond);
+  };
+
+  public else = (): Printer => {
     return this.elseif(true);
-  }
+  };
 
   // Reset state
-  public end = () => 
-  {
+  public end = () => {
     this.printNext = true;
     this.blockEntered = false;
     return this;
-  }
+  };
 
   public print = (...args: unknown[]): Printer => {
-    if(!this.printNext) 
+    if (!this.printNext) {
       return this;
+    }
 
-    const argString = args.reduce((a, c, i) => {
+    const argString = args.reduce<string>((a, c, i) => {
       const isObject = typeof c === "object";
-      const cString = isObject ? JSON.stringify(c, null, 4) : c;
+      const cString = isObject ? JSON.stringify(c, null, 4) : JSON.stringify(c);
 
       return i > 0 ? `${a} ${cString}` : `${a}${cString}`;
     }, "");
@@ -73,9 +66,10 @@ class Printer {
     return this;
   };
   public print_color = (color: Color, ...args: unknown[]): Printer => {
-    if(!this.printNext) 
+    if (!this.printNext) {
       return this;
-    
+    }
+
     this.echo(color);
     this.print(...args);
     this.echo(Color.reset);
@@ -84,8 +78,9 @@ class Printer {
   };
   public print_ln = (...args: unknown[]): Printer => this.print(...args, "\n");
   public print_color_ln = (color: Color, ...args: unknown[]): Printer => {
-    if(!this.printNext) 
+    if (!this.printNext) {
       return this;
+    }
 
     this.print_color(color, ...args);
     return this.print_ln();
@@ -146,8 +141,9 @@ class Printer {
   };
 
   public set_color = (color: Color): Printer => {
-    if(!this.printNext) 
+    if (!this.printNext) {
       return this;
+    }
 
     this.echo(color);
     return this;
@@ -162,4 +158,5 @@ class Printer {
 }
 
 // Enforce calling reset before starting new print chain
-export const lazer = (...args: unknown[]) => new Printer().reset().print(...args);
+export const lazer = (...args: unknown[]) =>
+  new Printer().reset().print(...args);
