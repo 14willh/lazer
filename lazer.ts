@@ -107,13 +107,13 @@ class Printer {
   public print_blue_ln = (...args: any[]): Printer =>
     this.print_color_ln(Color.blue, ...args);
   public print_magenta = (...args: any[]): Printer =>
-    this.print_color(Color.blue, ...args);
+    this.print_color(Color.magenta, ...args);
   public print_magenta_ln = (...args: any[]): Printer =>
-    this.print_color_ln(Color.blue, ...args);
+    this.print_color_ln(Color.magenta, ...args);
   public print_cyan = (...args: any[]): Printer =>
-    this.print_color(Color.blue, ...args);
+    this.print_color(Color.cyan, ...args);
   public print_cyan_ln = (...args: any[]): Printer =>
-    this.print_color_ln(Color.blue, ...args);
+    this.print_color_ln(Color.cyan, ...args);
 
   public print_space = (len = 1): Printer =>
     this.print(new Array(len + 1).join(" "));
