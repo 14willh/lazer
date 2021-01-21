@@ -10,7 +10,8 @@ enum Color {
 }
 
 class Printer {
-  private echo = (input?: string) => Deno.stdout.writeSync(new TextEncoder().encode(input));
+  /// @ts-ignore Work out Deno vs Node.js environment
+  private echo = (input?: string) => { try { return Deno.stdout.writeSync(new TextEncoder().encode(input))}catch(e){ return process.stdout.write(input) } };
 
   constructor() {
     if (!this.echo) {
@@ -56,7 +57,7 @@ class Printer {
 
     const argString = args.reduce<string>((a, c, i) => {
       const isObject = typeof c === "object";
-      const cString = isObject ? JSON.stringify(c, null, 4) : JSON.stringify(c);
+      const cString = isObject ? JSON.stringify(c, null, 4) : c;
 
       return i > 0 ? `${a} ${cString}` : `${a}${cString}`;
     }, "");
