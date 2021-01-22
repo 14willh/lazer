@@ -37,6 +37,7 @@ publish-npm-package:
     needs: []
     before_script:
         - apk add --update npm # install nodejs and npm
+        - apk add git
         - npm ci --cache .npm --prefer-offline
         # Setup .npmrc for publishing
         - |
