@@ -1,3 +1,5 @@
+// deno-lint-ignore-file no-undef
+
 // ANSI Color Codes
 enum Color {
   reset = "\u001b[0m",
@@ -10,7 +12,7 @@ enum Color {
 }
 
 class Printer {
-  // deno-lint-ignore no-undef Work out Deno vs Node.js environment
+  // @ts-ignore Work out Deno vs Node.js environment
   private echo = (input?: string) => { try { return Deno.stdout.writeSync(new TextEncoder().encode(input))}catch(e){ return process.stdout.write(input) } };
 
   constructor() {
