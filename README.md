@@ -68,3 +68,14 @@ $ deno run example.ts
 ## Supported Platforms
 
 ### Deno
+```typescript
+import { lazer } from "https://deno.land/x/lazer/mod.ts"
+```
+
+### Node.js
+```bash
+npm i --save lazer-js
+```
+```javascript
+const { lazer } = require('lazer-js');
+```
