@@ -9,8 +9,8 @@ workflow:
       - if: $CI_COMMIT_BRANCH
   
 variables:
-# Use the OverlayFS driver for improved performance.
-DOCKER_DRIVER: overlay
+    # Use the OverlayFS driver for improved performance.
+    DOCKER_DRIVER: overlay
 
 stages:
 - test
@@ -32,23 +32,23 @@ lint:
        - deno lint --unstable lazer.ts
 
 publish-npm-package:
-stage: release
-image: hayd/alpine-deno
-before_script:
-    - apk add --update npm # install nodejs and npm
-    - npm ci --cache .npm --prefer-offline
-    # Setup .npmrc for publishing
-    - |
-    {
-        echo "registry.npmjs.org/:_authToken=\${NPM_TOKEN}"
-    } | tee .npmrc
-    - apt-get update && apt-get install -y --no-install-recommends git-core ca-certificates
-    - npm install semantic-release @semantic-release/git @semantic-release/gitlab @semantic-release/npm --save-dev
-cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-    - .npm/
-script:
-    - npx semantic-release
-rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    stage: release
+    image: hayd/alpine-deno
+    before_script:
+        - apk add --update npm # install nodejs and npm
+        - npm ci --cache .npm --prefer-offline
+        # Setup .npmrc for publishing
+        - |
+            {
+                echo "registry.npmjs.org/:_authToken=\${NPM_TOKEN}"
+            } | tee .npmrc
+        - apt-get update && apt-get install -y --no-install-recommends git-core ca-certificates
+        - npm install semantic-release @semantic-release/git @semantic-release/gitlab @semantic-release/npm --save-dev
+    cache:
+        key: ${CI_COMMIT_REF_SLUG}
+        paths:
+        - .npm/
+    script:
+        - npx semantic-release
+    rules:
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
