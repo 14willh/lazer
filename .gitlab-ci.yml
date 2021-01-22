@@ -1,0 +1,54 @@
+# Adapted from:
+# https://docs.gitlab.com/ee/ci/examples/semantic-release.html
+# https://semantic-release.gitbook.io/semantic-release/recipes/recipes/gitlab-ci
+# ATTENTION: Requires GITLAB_TOKEN variable to be set via project CI/CD config with
+# a project/group Access Token
+
+workflow:
+    rules:
+      - if: $CI_COMMIT_BRANCH
+  
+variables:
+# Use the OverlayFS driver for improved performance.
+DOCKER_DRIVER: overlay
+
+stages:
+- test
+- lint
+- release
+
+test:
+    stage: test
+    image: hayd/alpine-deno
+    needs: []
+    script:
+        - deno test lazer.spec.ts
+
+lint:
+    stage: lint
+    image: hayd/alpine-deno
+    needs: []
+    script:
+       - deno lint --unstable lazer.ts
+
+publish-npm-package:
+stage: release
+image: hayd/alpine-deno
+before_script:
+    - apk add --update npm # install nodejs and npm
+    - npm ci --cache .npm --prefer-offline
+    # Setup .npmrc for publishing
+    - |
+    {
+        echo "registry.npmjs.org/:_authToken=\${NPM_TOKEN}"
+    } | tee .npmrc
+    - apt-get update && apt-get install -y --no-install-recommends git-core ca-certificates
+    - npm install semantic-release @semantic-release/git @semantic-release/gitlab @semantic-release/npm --save-dev
+cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+    - .npm/
+script:
+    - npx semantic-release
+rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
