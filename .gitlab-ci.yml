@@ -22,7 +22,7 @@ test:
     image: hayd/alpine-deno
     needs: []
     script:
-        - deno test lazer.spec.ts
+        - deno test lazer.test.ts
 
 lint:
     stage: lint
