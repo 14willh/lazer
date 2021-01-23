@@ -13,9 +13,9 @@ variables:
     DOCKER_DRIVER: overlay
 
 stages:
-- test
-- lint
-# - release
+    - test
+    - lint
+    # - release
 
 test:
     stage: test
@@ -31,24 +31,24 @@ lint:
     script:
        - deno lint --unstable lazer.ts
 
-publish-npm-package:
-    stage: release
-    image: node:latest
-    needs: []
-    before_script:
-        # - npm ci --cache .npm --prefer-offline
-        # Setup .npmrc for publishing
-        - |
-            {
-                echo "registry.npmjs.org/:_authToken=\${NPM_TOKEN}"
-            } | tee .npmrc
-        - apt-get update && apt-get install -y --no-install-recommends git-core ca-certificates
-        - npm install @semantic-release/gitlab-config
-    cache:
-        key: ${CI_COMMIT_REF_SLUG}
-        paths:
-        - .npm/
-    script:
-        - npx semantic-release
-    rules:
-        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+# publish-npm-package:
+#     stage: release
+#     image: node:latest
+#     needs: []
+#     before_script:
+#         # - npm ci --cache .npm --prefer-offline
+#         # Setup .npmrc for publishing
+#         - |
+#             {
+#                 echo "registry.npmjs.org/:_authToken=\${NPM_TOKEN}"
+#             } | tee .npmrc
+#         - apt-get update && apt-get install -y --no-install-recommends git-core ca-certificates
+#         - npm install @semantic-release/gitlab-config
+#     cache:
+#         key: ${CI_COMMIT_REF_SLUG}
+#         paths:
+#         - .npm/
+#     script:
+#         - npx semantic-release
+#     rules:
+#         - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
