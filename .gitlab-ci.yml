@@ -43,7 +43,7 @@ publish-npm-package:
                 echo "registry.npmjs.org/:_authToken=\${NPM_TOKEN}"
             } | tee .npmrc
         - apt-get update && apt-get install -y --no-install-recommends git-core ca-certificates
-        - npm install semantic-release @semantic-release/git @semantic-release/gitlab @semantic-release/npm --save-dev
+        - npm install @semantic-release/gitlab
     cache:
         key: ${CI_COMMIT_REF_SLUG}
         paths:
