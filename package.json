@@ -4,7 +4,7 @@
   "description": "A console printer with a fluent API",
   "author": "Will Henderson <>",
   "license": "MIT",
-  "repository": "https://gitlab.app.whenderson.net/wah/lazer.git",
+  "repository": "https://gitlab.app.whenderson.net/wah/lazer",
   "url" : "https://gitlab.app.whenderson.net/wah/lazer/issues",
   "keywords": [
     "console",
