@@ -1,4 +1,5 @@
 "use strict";
+// deno-lint-ignore-file no-undef
 var __spreadArrays = (this && this.__spreadArrays) || function () {
     for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
     for (var r = Array(s), k = 0, i = 0; i < il; i++)
@@ -22,7 +23,7 @@ var Color;
 var Printer = /** @class */ (function () {
     function Printer() {
         var _this = this;
-        /// @ts-ignore Work out Deno vs Node.js environment
+        // @ts-ignore Work out Deno vs Node.js environment
         this.echo = function (input) { try {
             return Deno.stdout.writeSync(new TextEncoder().encode(input));
         }
