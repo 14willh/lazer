@@ -1,23 +1,25 @@
 import { assertEquals } from "https://deno.land/std@0.83.0/testing/asserts.ts"
 import { lazer } from "./lazer.ts";
 
-const decorate_echo = (printer: any, context: { stdout: string }): void => 
+const decorate_echo = (printer: any): { stdout: string } => 
 {
+    const context = { stdout: '' }
     const orig = printer['echo'];
     printer['echo'] = (output: string) => 
     {
         context.stdout += output;
         return orig(output);
     }
+
+    return context;
 }
 
 // Printer #if
 Deno.test('Printer #if should print following statements when condition is true', () => 
 {
     const printer = lazer();
-    const context = { stdout: '' };
-    decorate_echo(printer, context);
-
+    const context = decorate_echo(printer);
+    
     printer
         .if(true)
         .print_ln("this is true")
@@ -29,8 +31,7 @@ Deno.test('Printer #if should print following statements when condition is true'
 Deno.test('Printer #if should not print following statements when condition is false', () => 
 {
     const printer = lazer();
-    const context = { stdout: '' };
-    decorate_echo(printer, context);
+    const context = decorate_echo(printer);
 
     printer
         .if(false)
@@ -43,8 +44,7 @@ Deno.test('Printer #if should not print following statements when condition is f
 Deno.test('Printer #if should print all statements in the block', () => 
 {
     const printer = lazer();
-    const context = { stdout: '' };
-    decorate_echo(printer, context);
+    const context = decorate_echo(printer);
 
     printer
         .if(true)
@@ -61,8 +61,7 @@ Deno.test('Printer #if should print all statements in the block', () =>
 Deno.test('Printer #if should print no statements in the block', () => 
 {
     const printer = lazer();
-    const context = { stdout: '' };
-    decorate_echo(printer, context);
+    const context = decorate_echo(printer);
 
     printer
         .if(false)
@@ -80,8 +79,7 @@ Deno.test('Printer #if should print no statements in the block', () =>
 Deno.test('Printer #elseif should print following statements when condition is true', () => 
 {
     const printer = lazer();
-    const context = { stdout: '' };
-    decorate_echo(printer, context);
+    const context = decorate_echo(printer);
 
     printer
         .if(false)
@@ -97,8 +95,7 @@ Deno.test('Printer #elseif should print following statements when condition is t
 Deno.test('Printer #elseif should not print following statements when a previous block has been entered', () => 
 {
     const printer = lazer();
-    const context = { stdout: '' };
-    decorate_echo(printer, context);
+    const context = decorate_echo(printer);
 
     printer
         .if(false)
@@ -114,8 +111,7 @@ Deno.test('Printer #elseif should not print following statements when a previous
 Deno.test('Printer #elseif not should print following statements when condition is false', () => 
 {
     const printer = lazer();
-    const context = { stdout: '' };
-    decorate_echo(printer, context);
+    const context = decorate_echo(printer);
 
     printer
         .if(true)
@@ -131,8 +127,7 @@ Deno.test('Printer #elseif not should print following statements when condition 
 Deno.test('Printer #elseif should print all statements in the block', () => 
 {
     const printer = lazer();
-    const context = { stdout: '' };
-    decorate_echo(printer, context);
+    const context = decorate_echo(printer);
 
     printer
         .if(false)
@@ -150,8 +145,7 @@ Deno.test('Printer #elseif should print all statements in the block', () =>
 Deno.test('Printer #elseif should print no statements in the block', () => 
 {
     const printer = lazer();
-    const context = { stdout: '' };
-    decorate_echo(printer, context);
+    const context = decorate_echo(printer);
 
     printer
         .if(false)
@@ -170,8 +164,7 @@ Deno.test('Printer #elseif should print no statements in the block', () =>
 Deno.test('Printer #else should not print if previous if block entered', () => 
 {
     const printer = lazer();
-    const context = { stdout: '' };
-    decorate_echo(printer, context);
+    const context = decorate_echo(printer);
 
     printer
         .if(true)
@@ -187,8 +180,7 @@ Deno.test('Printer #else should not print if previous if block entered', () =>
 Deno.test('Printer #else should not print if previous if block entered', () => 
 {
     const printer = lazer();
-    const context = { stdout: '' };
-    decorate_echo(printer, context);
+    const context = decorate_echo(printer);
 
     printer
         .if(true)
@@ -207,8 +199,7 @@ Deno.test('Printer #else should not print if previous if block entered', () =>
 Deno.test('Printer #else should not print if previous elseif block entered', () => 
 {
     const printer = lazer();
-    const context = { stdout: '' };
-    decorate_echo(printer, context);
+    const context = decorate_echo(printer);
 
     printer
         .if(false)
@@ -227,8 +218,7 @@ Deno.test('Printer #else should not print if previous elseif block entered', () 
 Deno.test('Printer #else should print if previous if/elseif block not entered', () => 
 {
     const printer = lazer();
-    const context = { stdout: '' };
-    decorate_echo(printer, context);
+    const context = decorate_echo(printer);
 
     printer
         .if(false)
@@ -247,8 +237,7 @@ Deno.test('Printer #else should print if previous if/elseif block not entered', 
 Deno.test('Printer #else should print all statements in the block', () => 
 {
     const printer = lazer();
-    const context = { stdout: '' };
-    decorate_echo(printer, context);
+    const context = decorate_echo(printer);
 
     printer
         .if(false)
@@ -266,8 +255,7 @@ Deno.test('Printer #else should print all statements in the block', () =>
 Deno.test('Printer #else should print no statements in the block', () => 
 {
     const printer = lazer();
-    const context = { stdout: '' };
-    decorate_echo(printer, context);
+    const context = decorate_echo(printer);
 
     printer
         .if(true)

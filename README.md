@@ -32,7 +32,7 @@ import { lazer } from "https://deno.land/x/lazer/mod.ts"
 
 const remoteAddr = "127.0.0.1";
 const method = "GET";
-const path = "/a/really/really/really/really/really/really/long/path/here";
+const path = "/a/really/really/really/long/path/here";
 const status = 200;
 const time_ms = 20;
 const size_bytes_string = "1.10kB";
