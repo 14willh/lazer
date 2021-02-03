@@ -12,6 +12,7 @@
     "log",
     "logger"
   ],
+  "main": "./lazer-js.js",
   "devDependencies": {
     "esbuild": "^0.8.33",
     "tsc": "^1.20150623.0",
