@@ -20,7 +20,6 @@
   "files": [
     "README.md",
     "LICENSE",
-    "lazer-js.js",
-    "lazer-js.min.js"
+    "nodejs/index.js"
   ]
 }
