@@ -13,7 +13,7 @@ enum Color {
 
 class Printer {
   // @ts-ignore Work out Deno vs Node.js environment
-  private echo = (input?: string) => { try { return Deno.stdout.writeSync(new TextEncoder().encode(input))}catch(e){ return process.stdout.write(input) } };
+  private echo = (input?: string) => { try { return Deno.stdout.writeSync(new TextEncoder().encode(input))}catch(_e){ return process.stdout.write(input) } };
 
   constructor() {
     if (!this.echo) {
