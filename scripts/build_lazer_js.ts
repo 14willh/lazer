@@ -35,7 +35,6 @@ const cleanup = async () =>
 }
 
 // main
-await Deno.mkdir(outDir, { recursive: true });
 await duplicate();
 await compile();
 await minify();
