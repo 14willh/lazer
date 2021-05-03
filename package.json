@@ -1,6 +1,6 @@
 {
   "name": "lazer-js",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "A console printer with a fluent API",
   "author": "Will Henderson <>",
   "license": "MIT",
@@ -12,7 +12,7 @@
     "log",
     "logger"
   ],
-  "main": "index.js",
+  "main": "lazer-js.js",
   "devDependencies": {
     "esbuild": "^0.8.33",
     "tsc": "^1.20150623.0",
@@ -21,6 +21,6 @@
   "files": [
     "README.md",
     "LICENSE",
-    "nodejs/index.js"
+    "lazer-js.js"
   ]
 }

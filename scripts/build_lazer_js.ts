@@ -1,9 +1,7 @@
-const outDir = 'nodejs';
-
 const duplicate = async () => 
 {
     const p = Deno.run({
-        cmd: ["cp", "lazer.ts", `${outDir}/index.ts`],
+        cmd: ["cp", "lazer.ts", `lazer-js.ts`],
     });
     const { code } = await p.status(); // (*1); wait here for child to finish
     p.close();
@@ -12,7 +10,7 @@ const duplicate = async () =>
 const compile = async () => 
 {
     const p = Deno.run({
-        cmd: ["npx", "tsc", `${outDir}/index.ts`],
+        cmd: ["npx", "tsc", `lazer-js.ts`],
     });
     const { code } = await p.status(); // (*1); wait here for child to finish
     p.close();
@@ -21,7 +19,7 @@ const compile = async () =>
 const minify = async () => 
 {
     const p = Deno.run({
-        cmd: ["node", "scripts/js-minify.js", `${outDir}/index.js`, `${outDir}/index.js`],
+        cmd: ["node", "scripts/js-minify.js", `lazer-js.js`, `lazer-js.js`],
     });
     const { code } = await p.status(); // (*1); wait here for child to finish
     p.close();
@@ -30,7 +28,7 @@ const minify = async () =>
 const cleanup = async () => 
 {
     const p = Deno.run({
-        cmd: ["rm", `${outDir}/index.ts`],
+        cmd: ["rm", `lazer-js.ts`],
     });
     const { code } = await p.status(); // (*1); wait here for child to finish
     p.close();
