@@ -4,8 +4,8 @@ import { lazer } from "./lazer.ts";
 const decorate_echo = (printer: any): { stdout: string } => 
 {
     const context = { stdout: '' }
-    const orig = printer['echo'];
-    printer['echo'] = (output: string) => 
+    const orig = printer['echoInternal'];
+    printer['echoInternal'] = (output: string) => 
     {
         context.stdout += output;
         return orig(output);
@@ -268,4 +268,43 @@ Deno.test('Printer #else should print no statements in the block', () =>
     assertEquals(context.stdout.includes("this is true 1"), false);
     assertEquals(context.stdout.includes("this is true 2"), false);
     assertEquals(context.stdout.includes("this is true 3"), false);
+});
+
+Deno.test('Printer #buffer should buffer print calls', () => 
+{
+    const printer = lazer();
+    const context = decorate_echo(printer);
+
+    const buffer = printer
+        .buffer()
+        .print("Test buffer")
+        .return();
+
+    assertEquals(buffer, "Test buffer");
+});
+
+Deno.test('Printer #buffer should not print to stdout when in buffer mode', () => 
+{
+    const printer = lazer();
+    const context = decorate_echo(printer);
+
+    const buffer = printer
+        .buffer()
+        .print("Test buffer")
+        .return();
+
+    assertEquals(context.stdout.includes("Test buffer"), false);
+});
+
+Deno.test('Printer #return should return current buffer value', () => 
+{
+    const printer = lazer();
+    const context = decorate_echo(printer);
+
+    const buffer = printer
+        .buffer()
+        .print("Test buffer")
+        .return();
+
+    assertEquals(buffer, "Test buffer");
 });

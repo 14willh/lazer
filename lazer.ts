@@ -12,8 +12,14 @@ enum Color {
 }
 
 class Printer {
-  // @ts-ignore Work out Deno vs Node.js environment
-  private echo = (input?: string) => { try { return Deno.stdout.writeSync(new TextEncoder().encode(input))}catch(_e){ return process.stdout.write(input) } };
+
+  // Used to track state of calls to if/elseif/else()
+  private printNext = true;
+  private blockEntered = false;
+
+  // used to track buffer mode
+  private printBuffer = '';
+  private bufferMode = false;
 
   constructor() {
     if (!this.echo) {
@@ -21,10 +27,24 @@ class Printer {
     }
   }
 
-  // Used to track state of calls to if/elseif/else()
-  private printNext = true;
-  private blockEntered = false;
-
+  // @ts-ignore Work out Deno vs Node.js environment
+  private echoInternal = (input?: string) => { try { return Deno.stdout.writeSync(new TextEncoder().encode(input))}catch(_e){ return process.stdout.write(input) } };
+  
+  private echo = (input?: string) => 
+  {
+    if(this.bufferMode)
+    {
+      if(input && input.length > 0)
+      {
+        this.printBuffer += String(input);
+      }
+    }
+    else 
+    {
+      this.echoInternal(input);
+    }
+  } 
+  
   public if = (cond: boolean): Printer => {
     this.blockEntered = cond;
     this.printNext = cond;
@@ -50,6 +70,17 @@ class Printer {
     this.printNext = true;
     this.blockEntered = false;
     return this;
+  };
+
+  public buffer = (): Printer => 
+  {
+    this.bufferMode = true;
+    return this;
+  };
+
+  public return = (): string => 
+  {
+    return this.printBuffer;
   };
 
   public print = (...args: unknown[]): Printer => {
