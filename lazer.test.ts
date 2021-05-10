@@ -318,3 +318,23 @@ Deno.test('Printer #return should append reset char to buffer value', () =>
 
     assertEquals(buffer.endsWith("\x1b[0m"), true);
 });
+
+Deno.test('Printer #store should store current buffer under given alias', () => 
+{
+    const printer = lazer();
+    const context = decorate_echo(printer);
+
+    printer
+        .buffer()
+        .set_color_red().print_ln("Some red output to buffer")
+        .store('i am an alias');
+
+    assertEquals(context.stdout.includes("Some red output to buffer"), false);
+
+    printer
+        .buffer()
+        .load('i am an alias')
+        .print_b();
+
+    assertEquals(context.stdout.includes("Some red output to buffer"), true);
+});
