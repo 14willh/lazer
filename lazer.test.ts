@@ -273,14 +273,13 @@ Deno.test('Printer #else should print no statements in the block', () =>
 Deno.test('Printer #buffer should buffer print calls', () => 
 {
     const printer = lazer();
-    const context = decorate_echo(printer);
 
     const buffer = printer
         .buffer()
         .print("Test buffer")
         .return();
 
-    assertEquals(buffer, "Test buffer");
+    assertEquals(buffer, "Test buffer\x1b[0m");
 });
 
 Deno.test('Printer #buffer should not print to stdout when in buffer mode', () => 
@@ -288,7 +287,7 @@ Deno.test('Printer #buffer should not print to stdout when in buffer mode', () =
     const printer = lazer();
     const context = decorate_echo(printer);
 
-    const buffer = printer
+    printer
         .buffer()
         .print("Test buffer")
         .return();
@@ -299,12 +298,23 @@ Deno.test('Printer #buffer should not print to stdout when in buffer mode', () =
 Deno.test('Printer #return should return current buffer value', () => 
 {
     const printer = lazer();
-    const context = decorate_echo(printer);
 
     const buffer = printer
         .buffer()
         .print("Test buffer")
         .return();
 
-    assertEquals(buffer, "Test buffer");
+    assertEquals(buffer, "Test buffer\x1b[0m");
+});
+
+Deno.test('Printer #return should append reset char to buffer value', () => 
+{
+    const printer = lazer();
+
+    const buffer = printer
+        .buffer()
+        .print("Test buffer")
+        .return();
+
+    assertEquals(buffer.endsWith("\x1b[0m"), true);
 });
