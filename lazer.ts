@@ -18,8 +18,11 @@ class Printer {
   private blockEntered = false;
 
   // used to track buffer mode
-  private printBuffer = '';
+  private bufferString = '';
   private bufferMode = false;
+
+  // Saved Buffers Map
+  private static AliasedBufferMap = new Map<string, string>();
 
   constructor() {
     if (!this.echo) {
@@ -36,7 +39,7 @@ class Printer {
     {
       if(input && input.length > 0)
       {
-        this.printBuffer += String(input);
+        this.bufferString += String(input);
       }
     }
     else 
@@ -81,8 +84,31 @@ class Printer {
   public return = (): string => 
   {
     this.reset();
-    return this.printBuffer;
+    return this.bufferString;
   };
+
+  // Save current buffer as alias
+  public store = (alias: string): Printer => 
+  {
+    if(this.bufferMode)
+    {
+      Printer.AliasedBufferMap.set(alias, this.bufferString);
+    }
+    return this;
+  }
+  // print a saved buffer alias (if it exists)
+  public load = (alias: string): Printer => 
+  {
+    if(this.bufferMode)
+    {
+      const aliasedBuffer = Printer.AliasedBufferMap.get(alias);
+      if(aliasedBuffer)
+      {
+        this.bufferString = aliasedBuffer;
+      } 
+    }
+    return this;
+  }
 
   public print = (...args: unknown[]): Printer => {
     if (!this.printNext) {
@@ -100,6 +126,14 @@ class Printer {
 
     return this;
   };
+  public print_b = (): Printer => 
+  {
+    this.bufferMode = false;
+    this.print(this.bufferString);
+    this.reset();
+    this.bufferMode = true;
+    return this;
+  }
   public print_color = (color: Color, ...args: unknown[]): Printer => {
     if (!this.printNext) {
       return this;
