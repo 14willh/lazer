@@ -10,7 +10,7 @@ const duplicate = async () =>
 const compile = async () => 
 {
     const p = Deno.run({
-        cmd: ["npx", "tsc", `lazer-js.ts`, '--target', 'es2017'],
+        cmd: ["npx", "tsc", `lazer-js.ts`, '--target', 'es2017', '--module', 'commonjs'],
     });
     const { code } = await p.status(); // (*1); wait here for child to finish
     p.close();
