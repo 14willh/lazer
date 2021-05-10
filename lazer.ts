@@ -80,6 +80,7 @@ class Printer {
 
   public return = (): string => 
   {
+    this.reset();
     return this.printBuffer;
   };
 
