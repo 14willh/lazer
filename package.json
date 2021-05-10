@@ -13,6 +13,9 @@
     "logger"
   ],
   "main": "lazer-js.js",
+  "scripts": {
+    "build:node": "deno run --allow-all scripts/build_lazer_js.ts"
+  },
   "devDependencies": {
     "esbuild": "^0.8.33",
     "tsc": "^1.20150623.0",
