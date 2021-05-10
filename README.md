@@ -65,6 +65,57 @@ $ deno run example.ts
 
 ```
 
+### Buffering Example
+
+```typescript
+import { lazer } from "https://deno.land/x/lazer/mod.ts"
+
+const getLinePrefix = () => 
+{
+    return lazer().buffer()
+        .print_yellow('[').print_yellow("Line Prefix").print_yellow(']')
+        .print_space().print("-").print_space()
+        .print_yellow('[').set_color_yellow().print_utc_time().print_yellow(']')
+        .print_space().print("-").print_space()
+        .return();
+}
+
+lazer()
+    .print(getLinePrefix())
+    .print_yellow_ln("This is a prefixed line of text output");
+
+lazer()
+    .print(getLinePrefix())
+    .print_yellow_ln("This is another prefixed line of text output");
+```
+
+```bash
+$ deno run example.ts
+[Line Prefix] - [Mon, 10 May 2021 16:31:29 GMT] - This is a prefixed line of text output
+[Line Prefix] - [Mon, 10 May 2021 16:31:29 GMT] - This is another prefixed line of text output
+
+```
+
+### Buffer Aliasing Example
+
+```typescript
+import { lazer } from "https://deno.land/x/lazer/mod.ts"
+
+lazer().buffer()
+    .set_color_red().print_ln("Some red output to buffer")
+    .store('i am an alias');
+
+lazer().buffer()
+    .load('i am an alias')
+    .print_b();
+```
+
+```bash
+$ deno run example.ts
+Some red output to buffer
+
+```
+
 ## Supported Platforms
 
 ### Deno
