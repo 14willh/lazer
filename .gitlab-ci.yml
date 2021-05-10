@@ -15,6 +15,7 @@ variables:
 stages:
     - test
     - lint
+    - build
     # - release
 
 test:
