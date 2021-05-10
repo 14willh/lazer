@@ -31,6 +31,13 @@ lint:
     script:
        - deno lint --unstable lazer.ts
 
+build:
+    stage: build
+    image: hayd/alpine-deno
+    needs: [ test, lint ]
+    script:
+        - deno run --allow-all scripts/build_lazer_js.ts
+
 # publish-npm-package:
 #     stage: release
 #     image: node:latest
