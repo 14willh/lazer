@@ -9,6 +9,7 @@ Lazer helps you build, format and print complex messages to the console using an
 
 ### Simple Example
 
+#### **`example.ts`**
 ```typescript
 import { lazer } from "https://deno.land/x/lazer/mod.ts"
 
@@ -27,6 +28,7 @@ Hello, Green World!
 
 ### Complex Example
 
+#### **`example.ts`**
 ```typescript
 import { lazer } from "https://deno.land/x/lazer/mod.ts"
 
@@ -67,6 +69,7 @@ $ deno run example.ts
 
 ### Buffering Example
 
+#### **`example.ts`**
 ```typescript
 import { lazer } from "https://deno.land/x/lazer/mod.ts"
 
@@ -98,6 +101,7 @@ $ deno run example.ts
 
 ### Buffer Aliasing Example
 
+#### **`example.ts`**
 ```typescript
 import { lazer } from "https://deno.land/x/lazer/mod.ts"
 
