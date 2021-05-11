@@ -209,7 +209,7 @@ class Printer {
     return this.print(str);
   };
 
-  public set_color = (color: Color): Printer => {
+  private set_color = (color: Color): Printer => {
     if (!this.printNext) {
       return this;
     }
