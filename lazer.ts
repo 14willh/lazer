@@ -134,7 +134,7 @@ class Printer {
     this.bufferMode = true;
     return this;
   }
-  public print_color = (color: Color, ...args: unknown[]): Printer => {
+  private print_color = (color: Color, ...args: unknown[]): Printer => {
     if (!this.printNext) {
       return this;
     }
@@ -146,7 +146,7 @@ class Printer {
     return this;
   };
   public print_ln = (...args: unknown[]): Printer => this.print(...args, "\n");
-  public print_color_ln = (color: Color, ...args: unknown[]): Printer => {
+  private print_color_ln = (color: Color, ...args: unknown[]): Printer => {
     if (!this.printNext) {
       return this;
     }
