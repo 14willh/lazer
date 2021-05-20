@@ -24,6 +24,9 @@ class Printer {
   // Saved Buffers Map
   private static AliasedBufferMap = new Map<string, string>();
 
+  // color print mode - switch for printing or skipping color chars.
+  private colorMode = true; 
+
   constructor() {
     if (!this.echo) {
       throw new Error("Deno or Node.js needs to be installed to use Printer.");
@@ -110,6 +113,18 @@ class Printer {
     return this;
   }
 
+  public color_on = (): Printer => 
+  {
+    this.colorMode = true;
+    return this;
+  }
+
+  public color_off = (): Printer => 
+  {
+    this.colorMode = false;
+    return this;
+  }
+
   public print = (...args: unknown[]): Printer => {
     if (!this.printNext) {
       return this;
@@ -139,7 +154,10 @@ class Printer {
       return this;
     }
 
-    this.echo(color);
+    if(this.colorMode)
+    {
+      this.echo(color);
+    }
     this.print(...args);
     this.echo(Color.reset);
 
@@ -214,7 +232,11 @@ class Printer {
       return this;
     }
 
-    this.echo(color);
+    if(this.colorMode)
+    {
+      this.echo(color);
+    }
+
     return this;
   };
   public reset = (): Printer => this.set_color(Color.reset);
