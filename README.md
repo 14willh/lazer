@@ -120,6 +120,26 @@ Some red output to buffer
 
 ```
 
+## Toggling Color Mode Example
+
+#### **`example.ts`**
+```typescript
+import { lazer } from "https://deno.land/x/lazer/mod.ts"
+
+lazer()
+    .color_off()
+    .print_yellow_ln("I am not yellow")
+    .color_on()
+    .print_yellow_ln("I am yellow");
+```
+
+```bash
+$ deno run example.ts
+I am not yellow
+I am yellow
+
+```
+
 ## Supported Platforms
 
 ### Deno
