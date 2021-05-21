@@ -120,7 +120,7 @@ Some red output to buffer
 
 ```
 
-## Toggling Color Mode Example
+### Toggling Color Mode Example
 
 #### **`example.ts`**
 ```typescript
