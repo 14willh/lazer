@@ -158,8 +158,13 @@ class Printer {
     {
       this.echo(color);
     }
+    
     this.print(...args);
-    this.echo(Color.reset);
+
+    if(this.colorMode)
+    {
+      this.echo(Color.reset);
+    }
 
     return this;
   };
