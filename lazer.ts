@@ -86,7 +86,10 @@ class Printer {
 
   public return = (): string => 
   {
-    this.reset();
+    if(this.colorMode)
+    {
+      this.reset();
+    }
     return this.bufferString;
   };
 
@@ -254,5 +257,12 @@ class Printer {
 }
 
 // Enforce calling reset before starting new print chain
-export const lazer = (...args: unknown[]) =>
-  new Printer().reset().print(...args);
+export const lazer = (options = { colorMode: false }) =>
+{
+  const printer = new Printer();
+  if(options.colorMode)
+  {
+    printer.reset();  
+  }
+  return printer;
+}

@@ -1,6 +1,6 @@
 {
   "name": "lazer-js",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "A console printer with a fluent API",
   "author": "Will Henderson <>",
   "license": "MIT",
